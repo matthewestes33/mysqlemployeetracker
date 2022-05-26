@@ -62,59 +62,56 @@ const promptUser = () => {
         });
 };
 
-// View all Departments (promise)
-// const viewAllDepartments = () => {
-//     const sql = `SELECT department.id AS id, department.department_name AS department FROM department`;
-//     connection.promise().query(sql)
-//     .then(([data]) => {
-//         let departments = data;
-//         console.table(departments);
-//         promptUser();
-//     });  
-// };
-
-// View all Departments (async/await)
+// View all Departments (async)
 const viewAllDepartments = async () => {
-    const sql = `SELECT * FROM department ORDER BY id ASC`;
-    const data = await connection.promise().query(sql);
-    let departments = data;
-    console.table(departments);
-    promptUser();
+    try {
+        let query = 'SELECT * FROM department';
+        connection.query(query, function (err, res) {
+            if (err) throw err;
+            let departmentList = [];
+            res.forEach(department => departmentList.push(department));
+            console.table(departmentList);
+            promptUser();
+        });
+    } catch (err) {
+        console.log(err);
+        promptUser();
+    };
 }
 
-// View all Roles (promise)
-// const viewAllRoles = () => {
-//     const sql = `SELECT jobrole.id, jobrole.title, department.department_name AS department FROM jobrole INNER JOIN department 
-//     ON jobrole.department_id = department.id`;
-//     connection.promise().query(sql, (error, response) => {
-//         if (error) throw error;
-//         console.table(response);
-//         promptUser();
-//     });
-// };
-
-
-//View all Roles (async/await)
+//View all Roles (async)
 const viewAllRoles = async () => {
-    const sql = `SELECT role.id, role.title, department.department_name AS department FROM role 
-    INNER JOIN department ON role.department_id = department.id`;
-    const data = await connect.promise().query(sql)
-    let roles = data;
-    console.table(roles);
-    promptUser();
-};
-
-// View All Employees
-const viewAllEmployees = () => {
-    const sql = `SELECT employee.id, employee.first_name, employee.last_name, jobrole.title, department.department_name AS 'department', 
-    jobrole.salary FROM employee, jobrole, department WHERE department.id = jobrole.department_id AND jobrole.id = employee.role_id
-    ORDER BY employee.id ASC`;
-    connection.promise().query(sql, (error, response) => {
-        if (error) throw error;
-        console.table(response);
+    try {
+        let query = 'SELECT * FROM role';
+        connection.query(query, function (err, res) {
+            if (err) throw err;
+            let roleList = [];
+            res.forEach(role => roleList.push(role));
+            console.table(roleList);
+            promptUser();
+        });
+    } catch (err) {
+        console.log(err);
         promptUser();
-    });
-};
+    };
+}
+
+// View All Employees (async)
+const viewAllEmployees = async () => {
+    try {
+        let query = 'SELECT * FROM employee';
+        connection.query(query, function (err, res) {
+            if (err) throw err;
+            let employeeList = [];
+            res.forEach(employee => employeeList.push(employee));
+            console.table(employeeList);
+            promptUser();
+        });
+    } catch (err) {
+        console.log(err);
+        promptUser();
+    };
+}
 
 // Add a New Department
 const addDepartment = () => {
