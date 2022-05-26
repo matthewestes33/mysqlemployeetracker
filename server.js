@@ -1,7 +1,18 @@
 // Variables to require npm dependencies
-const connection = require('./config/connection');
 const inquirer = require('inquirer');
 const cTable = require('console.table');
+const mysql = require('mysql2');
+
+const connection = mysql.createConnection(
+    {
+        host: 'localhost',
+        port: 3306,
+        user: 'root',
+        password: 'week12bootc@mp',
+        database: 'enterprise'
+    },
+    console.log(`Connected to the enterprise database.`)
+);
 
 // Function for initiating the user prompt with menu choices 
 const promptUser = () => {
@@ -54,17 +65,18 @@ const promptUser = () => {
 // View all Departments
 const viewAllDepartments = () => {
     const sql = `SELECT department.id AS id, department.department_name AS department FROM department`;
-    connection.promise().query(sql, (error, response) => {
-        if (error) throw error;
-        console.table(response);
+    connection.promise().query(sql)
+    .then(([data]) => {
+        let departments = data;
+        console.table(departments);
         promptUser();
-    });
+    });  
 };
 
 // View all Roles
 const viewAllRoles = () => {
-    const sql = `SELECT role.id, role.title, department.department_name AS department FROM role INNER JOIN department 
-    ON role.department_id = department.id`;
+    const sql = `SELECT jobrole.id, jobrole.title, department.department_name AS department FROM jobrole INNER JOIN department 
+    ON jobrole.department_id = department.id`;
     connection.promise().query(sql, (error, response) => {
         if (error) throw error;
         console.table(response);
@@ -74,8 +86,8 @@ const viewAllRoles = () => {
 
 // View All Employees
 const viewAllEmployees = () => {
-    const sql = `SELECT employee.id, employee.first_name, employee.last_name, role.title, department.department_name AS 'department', 
-    role.salary FROM employee, role, department WHERE department.id = role.department_id AND role.id = employee.role_id
+    const sql = `SELECT employee.id, employee.first_name, employee.last_name, jobrole.title, department.department_name AS 'department', 
+    jobrole.salary FROM employee, jobrole, department WHERE department.id = jobrole.department_id AND jobrole.id = employee.role_id
     ORDER BY employee.id ASC`;
     connection.promise().query(sql, (error, response) => {
         if (error) throw error;
@@ -196,7 +208,7 @@ const addEmployee = () => {
     ])
         .then(answer => {
             const crit = [answer.fistName, answer.lastName]
-            const roleSql = `SELECT role.id, role.title FROM role`;
+            const roleSql = `SELECT jobrole.id, jobrole.title FROM jobrole`;
             connection.promise().query(roleSql, (error, data) => {
                 if (error) throw error;
                 const roles = data.map(({ id, title }) => ({ name: title, value: id }));
@@ -242,14 +254,14 @@ const addEmployee = () => {
 
 // Update An Employee Role
 const updateEmployeeRole = () => {
-    let sql = `SELECT employee.id, employee.first_name, employee.last_name, role.id AS "role_id" FROM employee, role, department 
-    WHERE department.id = role.department_id AND role.id = employee.role_id`;
+    let sql = `SELECT employee.id, employee.first_name, employee.last_name, role.id AS "role_id" FROM employee, jobrole, department 
+    WHERE department.id = jobrole.department_id AND jobrole.id = employee.role_id`;
     connection.promise().query(sql, (error, response) => {
         if (error) throw error;
         let employeeNamesArray = [];
         response.forEach((employee) => { employeeNamesArray.push(`${employee.first_name} ${employee.last_name}`); });
 
-        let sql = `SELECT role.id, role.title FROM role`;
+        let sql = `SELECT jobrole.id, jobrole.title FROM jobrole`;
         connection.promise().query(sql, (error, response) => {
             if (error) throw error;
             let rolesArray = [];
@@ -274,8 +286,8 @@ const updateEmployeeRole = () => {
                     let newTitleId, employeeId;
 
                     response.forEach((role) => {
-                        if (answer.updatedRole === role.title) {
-                            newTitleId = role.id;
+                        if (answer.updatedRole === jobrole.title) {
+                            newTitleId = jobrole.id;
                         }
                     });
 
@@ -301,3 +313,4 @@ const updateEmployeeRole = () => {
         });
     });
 };
+promptUser();
