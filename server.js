@@ -20,7 +20,7 @@ const promptUser = () => {
         {
             name: 'choices',
             type: 'list',
-            message: 'Please select an option:',
+            message: 'Welcome to enterprise! What would you like to do?',
             choices: [
                 'View All Departments',
                 'View All Roles',
@@ -62,26 +62,46 @@ const promptUser = () => {
         });
 };
 
-// View all Departments
-const viewAllDepartments = () => {
-    const sql = `SELECT department.id AS id, department.department_name AS department FROM department`;
-    connection.promise().query(sql)
-    .then(([data]) => {
-        let departments = data;
-        console.table(departments);
-        promptUser();
-    });  
-};
+// View all Departments (promise)
+// const viewAllDepartments = () => {
+//     const sql = `SELECT department.id AS id, department.department_name AS department FROM department`;
+//     connection.promise().query(sql)
+//     .then(([data]) => {
+//         let departments = data;
+//         console.table(departments);
+//         promptUser();
+//     });  
+// };
 
-// View all Roles
-const viewAllRoles = () => {
-    const sql = `SELECT jobrole.id, jobrole.title, department.department_name AS department FROM jobrole INNER JOIN department 
-    ON jobrole.department_id = department.id`;
-    connection.promise().query(sql, (error, response) => {
-        if (error) throw error;
-        console.table(response);
-        promptUser();
-    });
+// View all Departments (async/await)
+const viewAllDepartments = async () => {
+    const sql = `SELECT * FROM department ORDER BY id ASC`;
+    const data = await connection.promise().query(sql);
+    let departments = data;
+    console.table(departments);
+    promptUser();
+}
+
+// View all Roles (promise)
+// const viewAllRoles = () => {
+//     const sql = `SELECT jobrole.id, jobrole.title, department.department_name AS department FROM jobrole INNER JOIN department 
+//     ON jobrole.department_id = department.id`;
+//     connection.promise().query(sql, (error, response) => {
+//         if (error) throw error;
+//         console.table(response);
+//         promptUser();
+//     });
+// };
+
+
+//View all Roles (async/await)
+const viewAllRoles = async () => {
+    const sql = `SELECT role.id, role.title, department.department_name AS department FROM role 
+    INNER JOIN department ON role.department_id = department.id`;
+    const data = await connect.promise().query(sql)
+    let roles = data;
+    console.table(roles);
+    promptUser();
 };
 
 // View All Employees
