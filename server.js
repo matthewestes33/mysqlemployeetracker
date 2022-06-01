@@ -114,7 +114,6 @@ const viewAllEmployees = async () => {
 }
 
 // Add a New Department (async)
-
 const addDepartment = async () => {
     try {
         let answer = await inquirer.prompt([
@@ -129,8 +128,8 @@ const addDepartment = async () => {
             name: answer.name
         });
 
-        console.log(`${answer.name} added successfully to departments.\n`)
-        promptUser();
+        console.log(`${answer.name} added successfully to department list.`)
+        viewAllDepartments();
 
     } catch (err) {
         console.log(err);
@@ -139,7 +138,53 @@ const addDepartment = async () => {
 }
 
 // Add a New Role
-// const addRole = () =>
+const addRole = async () => {
+    try {
+        let dept = await connection.promise().query('SELECT * FROM department')
+        let answer = await inquirer.prompt([
+            {
+                name: 'title',
+                type: 'input',
+                message: 'What role would you like to add?'
+            },
+            {
+                name: 'salary',
+                type: 'input',
+                message: 'What salary will be earned in this role?'
+            },
+            {
+                name: 'department_id',
+                type: 'list',
+                choices: dept.map((department_id) => {
+                    return {
+                        name: department_id.name,
+                        value: department_id.id
+                    }
+                }),
+                message: 'What department does this role belong to?',
+            }
+        ]);
+        
+        let roleDept;
+        for (i = 0; i < dept.length; i++) {
+            if(dept[i].department_id === answer.choice) {
+                roleDept = dept[i];
+            };
+        }
+        let result = await connection.promise().query('INSERT INTO role SET ?', {
+            title: answer.title,
+            salary: answer.salary,
+            department_id: answer.deptID
+        })
+
+        console.log(`${answer.title} added successfully to roles.`)
+        viewAllRoles();
+
+    } catch (err) {
+        console.log(err);
+        promptUser();
+    };
+}
 
 // Add An Employee
 // const addEmployee = () => 
