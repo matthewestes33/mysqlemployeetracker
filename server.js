@@ -80,7 +80,7 @@ const viewAllDepartments = async () => {
 }
 
 //View all Roles (async)
-const viewAllRoles = async () => {
+const viewAllRoles = () => {
     try {
         let query = 'SELECT * FROM role';
         connection.query(query, function (err, res) {
@@ -114,24 +114,27 @@ const viewAllEmployees = async () => {
 }
 
 // Add a New Department
-const addDepartment = () => {
+const addDepartment = async () => {
     inquirer.prompt([
         {
-        name: 'newDept',
-        type: 'input',
-        message: 'What is the name of the department you want to add?'   
+            name: 'name',
+            type: 'input',
+            message: 'What is the name of the department you want to add?'
         }
-    ]).then((response) => {
-        connection.query(`INSERT INTO department SET ?`, 
-        {
-            name: response.newDept,
-        },
-        (err, res) => {
-            if (err) throw err;
-            console.log(`\n ${response.newDept} successfully added to database! \n`);
-            viewAllDepartments();
-        })
-    })
+    ]);
+    console.log("test")
+    try {
+        answer.connection.query('INSERT INTO department VALUES ?',
+            {
+                name: answer.name,
+            },
+        );
+        console.log("The department has been added!")
+        viewAllDepartments();
+    } catch (err) {
+        console.log(err);
+        promptUser();
+    };
 };
 
 // Add a New Role
