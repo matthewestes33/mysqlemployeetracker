@@ -44,13 +44,13 @@ const promptUser = () => {
             if (choices === 'View All Employees') {
                 viewAllEmployees();
             }
-            if (choices === 'Add Department') {
+            if (choices === 'Add A Department') {
                 addDepartment();
             }
-            if (choices === 'Add Role') {
+            if (choices === 'Add A Role') {
                 addRole();
             }
-            if (choices === 'Add Employee') {
+            if (choices === 'Add An Employee') {
                 addEmployee();
             }
             if (choices === 'Update Employee Role') {
@@ -113,29 +113,30 @@ const viewAllEmployees = async () => {
     };
 }
 
-// Add a New Department
+// Add a New Department (async)
+
 const addDepartment = async () => {
-    answer = await inquirer.prompt([
-        {
-            name: 'name',
-            type: 'input',
-            message: 'What is the name of the department you want to add?'
-        }
-    ]);
-    console.log("test")
     try {
-        answer.connection.query('INSERT INTO department VALUES ?',
+        let answer = await inquirer.prompt([
             {
-                name: answer.name,
-            },
-        );
-        console.log("The department has been added!")
-        viewAllDepartments();
+                name: 'name',
+                type: 'input',
+                message: 'What department would you like to add?'
+            }
+        ]);
+
+        let result = await connection.promise().query("INSERT INTO department SET ?", {
+            name: answer.name
+        });
+
+        console.log(`${answer.name} added successfully to departments.\n`)
+        promptUser();
+
     } catch (err) {
         console.log(err);
         promptUser();
     };
-};
+}
 
 // Add a New Role
 // const addRole = () =>
