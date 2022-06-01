@@ -137,7 +137,7 @@ const addDepartment = async () => {
     };
 }
 
-// Add a New Role
+// Add a New Role (triggers undefined choices on the last question)
 const addRole = async () => {
     try {
         let dept = await connection.promise().query('SELECT * FROM department')
@@ -186,8 +186,61 @@ const addRole = async () => {
     };
 }
 
-// Add An Employee
-// const addEmployee = () => 
+// Add An Employee (triggers undefined choices on the last question)
+const addEmployee = async () => {
+    try {
+        let roles = await connection.promise().query("SELECT * FROM role");
+        let managers = await connection.promise().query("SELECT * FROM employee");
+        let answer = await inquirer.prompt([
+            {
+                name: 'firstName',
+                type: 'input',
+                message: 'What is the first name of the employee you would like to add?'
+            },
+            {
+                name: 'lastName',
+                type: 'input',
+                message: 'What is the last name of the employee you would like to add?'
+            },
+            {
+                name: 'employeeRoleId',
+                type: 'list',
+                choices: roles.map((role) => {
+                    return {
+                        name: role.title,
+                        value: role.id
+                    }
+                }),
+                message: "What is the role ID of the employee you would like to add?"
+            },
+            {
+                name: 'employeeManagerId',
+                type: 'list',
+                choices: managers.map((manager) => {
+                    return {
+                        name: manager.first_name + " " + manager.last_name,
+                        value: manager.id
+                    }
+                }),
+                message: "What is the ID of the manager of the employee you would like to add?"
+            }
+        ])
+
+        let result = await connection.promise().query("INSERT INTO employee SET ?", {
+            first_name: answer.firstName,
+            last_name: answer.lastName,
+            role_id: (answer.employeeRoleId),
+            manager_id: (answer.employeeManagerId)
+        });
+
+        console.log(`${answer.firstName} ${answer.lastName} added successfully.`);
+        viewAllEmployees();
+
+    } catch (err) {
+        console.log(err);
+        promptUser();
+    };
+}
 
 // Update An Employee Role
 // const updateEmployeeRole = () => 
