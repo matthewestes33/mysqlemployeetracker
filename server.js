@@ -80,7 +80,7 @@ const viewAllDepartments = async () => {
 }
 
 //View all Roles (async)
-const viewAllRoles = () => {
+const viewAllRoles = async () => {
     try {
         let query = 'SELECT * FROM role';
         connection.query(query, function (err, res) {
@@ -115,7 +115,7 @@ const viewAllEmployees = async () => {
 
 // Add a New Department
 const addDepartment = async () => {
-    inquirer.prompt([
+    answer = await inquirer.prompt([
         {
             name: 'name',
             type: 'input',
