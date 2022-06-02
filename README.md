@@ -22,6 +22,8 @@ Referenced documentation and tutorials:
 
 mysql2 Using Promise Wrapper: https://www.npmjs.com/package/mysql2#using-promise-wrapper 
 
+inquirer Objects: https://www.npmjs.com/package/inquirer#objects
+
 Additional assistance:
 
 Thank you to my instructional staff, weekly tutor, and AskBCS Learning Assistants!
