@@ -137,31 +137,27 @@ const addDepartment = async () => {
     };
 }
 
-// Add a New Role (triggers undefined choices on the last question)
+// Add a New Role (just need to get department_id to !== null)
 const addRole = async () => {
     try {
         let dept = await connection.promise().query('SELECT * FROM department')
+        let deptList = dept[0].map(({ id, name }) => ({ value: id, name: `${id} ${name} `}));
         let answer = await inquirer.prompt([
             {
                 name: 'title',
                 type: 'input',
-                message: 'What role would you like to add?'
+                message: 'What role would you like to add?',
             },
             {
                 name: 'salary',
                 type: 'input',
-                message: 'What salary will be earned in this role?'
+                message: 'What salary will be earned in this role?',
             },
             {
                 name: 'department_id',
                 type: 'list',
-                choices: dept.map((department_id) => {
-                    return {
-                        name: department_id.name,
-                        value: department_id.id
-                    }
-                }),
                 message: 'What department does this role belong to?',
+                choices: deptList,
             }
         ]);
         
@@ -195,12 +191,12 @@ const addEmployee = async () => {
             {
                 name: 'firstName',
                 type: 'input',
-                message: 'What is the first name of the employee you would like to add?'
+                message: 'What is the first name of the employee you would like to add?',
             },
             {
                 name: 'lastName',
                 type: 'input',
-                message: 'What is the last name of the employee you would like to add?'
+                message: 'What is the last name of the employee you would like to add?',
             },
             {
                 name: 'employeeRoleId',
@@ -211,7 +207,7 @@ const addEmployee = async () => {
                         value: role.id
                     }
                 }),
-                message: "What is the role ID of the employee you would like to add?"
+                message: 'What is the role ID of the employee you would like to add?',
             },
             {
                 name: 'employeeManagerId',
@@ -222,7 +218,7 @@ const addEmployee = async () => {
                         value: manager.id
                     }
                 }),
-                message: "What is the ID of the manager of the employee you would like to add?"
+                message: 'What is the ID of the manager of the employee you would like to add?',
             }
         ])
 
@@ -242,7 +238,50 @@ const addEmployee = async () => {
     };
 }
 
-// Update An Employee Role
-// const updateEmployeeRole = () => 
+// Update An Employee Role (triggers undefined choices on the last question)
+const updateEmployeeRole = async () => {
+    try {
+        let employees = await connection.promise().query("SELECT * FROM employee");
 
+        let employeeSelection = await inquirer.prompt([
+            {
+                name: 'employee',
+                type: 'list',
+                choices: employees.map((employeeName) => {
+                    return {
+                        name: employeeName.first_name + " " + employeeName.last_name,
+                        value: employeeName.id
+                    }
+                }),
+                message: 'What employee will be changing roles?',
+            }
+        ]);
+
+        let roles = await connection.promise().query("SELECT * FROM role");
+
+        let roleSelection = await inquirer.prompt([
+            {
+                name: 'role',
+                type: 'list',
+                choices: roles.map((roleName) => {
+                    return {
+                        name: roleName.title,
+                        value: roleName.id
+                    }
+                }),
+                message: 'What existing role would you like to assign to this employee?',
+            }
+        ]);
+
+        let result = await connection.promise().query("UPDATE employee SET ? WHERE ?", 
+        [{ role_id: roleSelection.role }, { id: employeeSelection.employee }]);
+
+        console.log(`The employee's role was successfully updated.`);
+        viewAllEmployees();
+
+    } catch (err) {
+        console.log(err);
+        promptUser();
+    };
+}
 promptUser();

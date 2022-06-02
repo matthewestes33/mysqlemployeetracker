@@ -20,7 +20,7 @@ All elements of the project can be examined here: https://github.com/mattheweste
 
 Referenced documentation and tutorials:
 
-mysql2 - npm: https://www.npmjs.com/package/mysql2 
+mysql2 Using Promise Wrapper: https://www.npmjs.com/package/mysql2#using-promise-wrapper 
 
 Additional assistance:
 
