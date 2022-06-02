@@ -33,6 +33,7 @@ const promptUser = () => {
             ]
         }
     ])
+    // Promise 
         .then((answers) => {
             const { choices } = answers;
             if (choices === 'View All Departments') {
@@ -62,7 +63,7 @@ const promptUser = () => {
         });
 };
 
-// View all Departments (async)
+// Function to view all departments
 const viewAllDepartments = async () => {
     try {
         let query = 'SELECT * FROM department';
@@ -79,7 +80,7 @@ const viewAllDepartments = async () => {
     };
 }
 
-//View all Roles (async)
+// Function to view all roles
 const viewAllRoles = async () => {
     try {
         let query = 'SELECT * FROM role';
@@ -96,7 +97,7 @@ const viewAllRoles = async () => {
     };
 }
 
-// View All Employees (async)
+// Function to view all employees 
 const viewAllEmployees = async () => {
     try {
         let query = 'SELECT * FROM employee';
@@ -113,7 +114,7 @@ const viewAllEmployees = async () => {
     };
 }
 
-// Add a New Department (async)
+// Function to add a new department to the existing list
 const addDepartment = async () => {
     try {
         let answer = await inquirer.prompt([
@@ -137,7 +138,7 @@ const addDepartment = async () => {
     };
 }
 
-// Add a New Role
+// Function to add a new role to an existing department
 const addRole = async () => {
     try {
         let dept = await connection.promise().query('SELECT * FROM department')
@@ -176,7 +177,7 @@ const addRole = async () => {
     };
 }
 
-// Add An Employee (async)
+// Function to add a new employee to an existing role and existing manager
 const addEmployee = async () => {
     try {
         let roles = await connection.promise().query("SELECT * FROM role");
@@ -225,7 +226,7 @@ const addEmployee = async () => {
     };
 }
 
-// Update An Employee Role (async)
+// Function to update an employee' role to another existing role
 const updateEmployeeRole = async () => {
     try {
         let employees = await connection.promise().query("SELECT * FROM employee");

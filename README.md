@@ -10,7 +10,7 @@ This application allows the user to view and manage the departments, roles, and 
 
 ## Installation
 
-This application requires installation 
+This application requires installation of npm, inquirer, mysql2, and console table. 
 
 A walkthrough video can be viewed here: https://drive.google.com/file/d/1Ie_PSlHF2iVTjlILPOiY5SURn6iLRtJY/view
 
