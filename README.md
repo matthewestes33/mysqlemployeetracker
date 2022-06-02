@@ -6,13 +6,13 @@ This application allows the user to view and manage the departments, roles, and 
 
 ## Mock-up
 
-![REF.](./images/REF.jpg)
+![App in action.](./images/appinaction.jpg)
 
 ## Installation
 
 This application requires installation 
 
-A walkthrough video can be viewed here: GOOGLE DRIVE LINK
+A walkthrough video can be viewed here: https://drive.google.com/file/d/1Ie_PSlHF2iVTjlILPOiY5SURn6iLRtJY/view
 
 All elements of the project can be examined here: https://github.com/matthewestes33/mysqlemployeetracker
 
