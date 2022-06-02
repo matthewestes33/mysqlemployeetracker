@@ -217,7 +217,7 @@ const addEmployee = async () => {
             manager_id: (answer.employeeManagerId)
         });
 
-        console.log(`${answer.firstName} ${answer.lastName} added successfully.`);
+        console.log(`${answer.firstName} ${answer.lastName} added successfully to employee roster.`);
         viewAllEmployees();
 
     } catch (err) {
