@@ -1,6 +1,6 @@
 # mysqlemployeetracker
 
-## Homework 12 SQL: Employee Tracker 
+## Homework 12 MySQL: Employee Tracker 
 
 This application allows the user to view and manage the departments, roles, and employees in a corporate directory so that the user can organize and plan business activities.
 
