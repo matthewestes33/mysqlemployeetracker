@@ -24,6 +24,8 @@ mysql2 Using Promise Wrapper: https://www.npmjs.com/package/mysql2#using-promise
 
 inquirer Objects: https://www.npmjs.com/package/inquirer#objects
 
+MySQL UPDATE Statement: https://www.mysqltutorial.org/mysql-update-data.aspx 
+
 Additional assistance:
 
 Thank you to my instructional staff, weekly tutor, and AskBCS Learning Assistants!

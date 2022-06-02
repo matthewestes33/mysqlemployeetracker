@@ -2,7 +2,7 @@ INSERT INTO department (name)
 VALUES("Executive"), ("Engineering"), ("Security"), ("Human Resources"), ("Medical");
 
 INSERT INTO role (title, salary, department_id)
-VALUES("Captain", 90000, 1), ("First Officer", 99000, 1), ("Operations Officer", 99000, 1), 
+VALUES("Captain", 99999, 1), ("First Officer", 99000, 1), ("Operations Officer", 99000, 1), 
 ("Chief of Engineering", 98000, 2), ("Chief of Security", 98000, 3), ("Counselor", 98000, 4), 
 ("Chief Medical Officer", 99000, 5);
 
